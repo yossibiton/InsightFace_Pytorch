@@ -1,9 +1,5 @@
 # InsightFace_Pytorch
 
-Pytorch0.4.1 codes for InsightFace
-
-------
-
 ## 1. Intro
 
 - This repo is a reimplementation of Arcface[(paper)](https://arxiv.org/abs/1801.07698), or Insightface[(github)](https://github.com/deepinsight/insightface)
