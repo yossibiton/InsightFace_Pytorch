@@ -78,8 +78,15 @@ class face_learner(object):
         if from_save_folder:
             save_path = conf.save_path
         else:
-            save_path = conf.model_path            
-        self.model.load_state_dict(torch.load(save_path/'model_{}'.format(fixed_str)))
+            save_path = conf.model_path
+
+        pretrained_path = save_path/'model_{}'.format(fixed_str)
+        if torch.cuda.is_available():
+            device = torch.cuda.current_device()
+            pretrained_dict = torch.load(pretrained_path, map_location=lambda storage, loc: storage.cuda(device))
+        else:
+            pretrained_dict = torch.load(pretrained_path, map_location=lambda storage, loc: storage)
+        self.model.load_state_dict(pretrained_dict)
         if not model_only:
             self.head.load_state_dict(torch.load(save_path/'head_{}'.format(fixed_str)))
             self.optimizer.load_state_dict(torch.load(save_path/'optimizer_{}'.format(fixed_str)))
@@ -106,6 +113,7 @@ class face_learner(object):
                 else:
                     embeddings[idx:idx + conf.batch_size] = self.model(batch.to(conf.device)).cpu()
                 idx += conf.batch_size
+                print('{} / {}'.format(idx, len(carray)))
             if idx < len(carray):
                 batch = torch.tensor(carray[idx:])            
                 if tta:

@@ -20,9 +20,11 @@ if not save_path.exists():
 
 # 初始化摄像头
 cap = cv2.VideoCapture(0)
+
 # 我的摄像头默认像素640*480，可以根据摄像头素质调整分辨率
-cap.set(3,1280)
-cap.set(4,720)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+
 mtcnn = MTCNN()
 
 while cap.isOpened():
