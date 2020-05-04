@@ -89,6 +89,7 @@ def load_mx_rec(rec_path):
         img_info = imgrec.read_idx(idx)
         header, img = mx.recordio.unpack_img(img_info)
         label = int(header.label)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = Image.fromarray(img)
         label_path = save_path/str(label)
         if not label_path.exists():
